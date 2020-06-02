@@ -1,0 +1,119 @@
+{% extends 'main/header.html' %}
+
+{% block content%}
+
+	<div class="nav">
+		<div class = "row midnight_bloom" style = "border-radius: 0px 0px 15px 15px;">
+			<div class = "col s1"></div>
+			<div class = "col s10">
+				<ul class="tabs tabs-fixed-width tabs-transparent" >
+					<li class="tab col s3"><a href="#swipe-1">Competition Participated</a></li>
+					<li class="tab col s3 white-text"><a href="#swipe-2">Competition Organised</a></li>
+				</ul>
+			</div>
+			<div class = "col s1 center">
+				<div class="fixed-action-btn" style="position:relative;height:60px;bottom: 10px;">
+					<a class="btn-floating btn-large red">
+						<i class="large material-icons">arrow_drop_down_circle</i>
+					</a>
+					<ul>
+						<li><a href = "/EventCreate" class="btn-floating btn-large red"><i class="large material-icons">add_circle</i>Create Event</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="swipe-2" class="col s12" >
+		<ul class="collapsible popout">
+		{% for eve in organized %}
+			<li class = "cloudy_knoxville">
+				<div class="collapsible-header soft_grass row" style = "border-radius:10px;">
+					<div class = "col s1">
+						<img src="{{eve.event_image.url}}" width="60px" height="60px" class="circle responsive-img">
+					</div>
+					<div class = "col s12 center">
+						<b>{{eve.event_title}}</b>
+					</div>
+				</div>
+				<div class="collapsible-body" >
+					<table class = "" style = " border-spacing: 20px;border-collapse: separate;">
+						<tbody>
+							<tr> 
+								<th>Event Description:</th>
+								<td style = "padding: 10px;">{{eve.event_brief|safe}}</td>
+							</tr>
+							<tr> 
+								<th>Event Description:</th>
+								<td style = "padding: 10px;">{{eve.event_description|safe}}</td>
+							</tr>
+							<tr>
+								<th>Event Date:</th>
+								<td><pre>{{eve.event_date.date}}		{{eve.event_date.time}}</pre></td>
+							</tr>
+							<tr>
+								<th>Event Organized by:</th>
+								<td><!-- <a href="/?q={{eve.organizer_id.Organizer_name}}"> </a> -->{{eve.organizer_id.Organizer_name}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
+	<div id="swipe-1" class="col s12">
+		<ul class="collapsible popout">
+		{% for eve in participating %}
+			<li class = "cloudy_knoxville">
+					<div class="collapsible-header soft_grass row" style = "border-radius:10px;">
+						<div class = "col s1">
+							<img src="{{eve.event_image.url}}" width="60px" height="60px" class="circle responsive-img">
+						</div>
+						<div class = "col s12 center">
+							<b>{{eve.event_title}}</b>
+						</div>
+					</div>
+					<div class="collapsible-body" style = "border-radius: 0px 0px 10px 10px;"> 
+						<table style = " border-spacing: 20px;border-collapse: separate;">
+							<tbody>
+								<tr> 
+									<th>Event Description:</th>
+									<td style = "padding: 10px;">{{eve.event_brief|safe}}</td>
+								</tr>
+								<tr> 
+									<th>Event Description:</th>
+									<td style = "padding: 10px;">{{eve.event_description|safe}}</td>
+								</tr>
+								<tr>
+									<th>Event Date:</th>
+									<td><pre>{{eve.event_date.date}}		{{eve.event_date.time}}</pre></td>
+								</tr>
+								<tr>
+									<th>Published at:</th>
+									<td><pre>{{eve.event_published.date}}		{{eve.event_published.time}}</pre></td>
+								</tr>
+								<tr>
+									<th>Event Organized by:</th>
+									<td style = "text-transform:capitalize;">{{user.username}} as {{eve.organizer_id.Organizer_name}}</td>
+								</tr>
+								<tr>
+									<th>in Category:</th>
+									<td>{{eve.event_category.event_category}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</li>
+		{% endfor %}
+		</ul>
+	</div>
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, {direction: 'bottom',hoverEnabled: false});
+  });
+
+</script>
+
+{% endblock %}

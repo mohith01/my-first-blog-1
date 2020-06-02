@@ -1,0 +1,93 @@
+{% extends 'main/header.html' %}
+
+{% block content %}
+	<div class="row">
+	{% if categories %}
+		<nav class = "midnight_bloom" style = "border-radius:15px;">
+			<div class="nav-wrapper" >
+				<div class="col s1"></div>
+				<div class="col s11">
+						<a href="/" class="breadcrumb">Home</a>
+					{% if query is null or query == "" %}
+						<a href="" class="breadcrumb">All Events</a>
+					{% else %}
+						<a class="breadcrumb">Search event</a>
+						<a style = "text-transform: capitalize;" class="breadcrumb">{{query}}</a>
+					{% endif%}
+				</div>
+			</div>
+		</nav>
+		<br>
+		{% for eve in categories %}
+			<div class = "col s10 l6 m8" style = "max-width:400;">
+				<div class="card cheerful_caramel small sticky-action z-depth-3" style = "border-radius:10px;">
+					<div class="card-image waves-effect waves-block waves-light" style = "background: black;">
+						<img class="activator" style = "opacity:0.8;" src="{{eve.event_image.url}}" width="300px" height="250px">
+					</div>
+					<div class="card-content">
+						<span class="card-title activator grey-text text-darken-4"><b>{{eve.event_title}}<br><small>in {{eve.event_category}}</small></b><i class="material-icons right">more_vert</i></span>
+					</div>
+					<div class="card-reveal cheerful_caramel" style = "overflow:hidden;">
+						<span class="card-title grey-text text-darken-4">{{eve.event_title}}<i class="material-icons right">close</i></span>
+						<div style = "overflow:scroll;height:200px;width:300px;"><p>{{eve.event_brief|safe}}</p></div>
+						<div class="card-action midnight_bloom">
+							<div class="row center">
+									<a href="/EventRegister?event={{eve.id}}"  class="waves-effect btn-flat" style = "width:40%;">Register</a>
+									<a class="waves-effect btn-flat modal-trigger" style = "width:40%;" href = "#modal{{eve.id}}">View</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+			<div id="modal{{eve.id}}" class="modal modal-fixed-footer black" tabindex="0" style="z-index: 1003; display: none; opacity: 0; top: 4%; transform: scaleX(0.8) scaleY(0.8);border-radius:10px;">
+				<div class="modal-content ladoga_bottom" style = "opacity:0.8;">
+					<h4 class = "center" >{{eve.event_title}}</h4>
+					<h6 class = "center" ><b>in {{eve.event_category.event_category}}</b></h6>
+					<table class = "" style = " border-spacing: 20px;border-collapse: separate;">
+						<tbody>
+							<tr> 
+								<th>Event Information:</th>
+								<td style = "padding: 10px;">{{eve.event_description|safe}}</td>
+							</tr>
+							<tr>
+								<th>Team size:</th>
+								<td>{{eve.max_Team_size}}</td>
+							</tr>
+							<tr>
+								<th>Event Date:</th>
+								<td>{{eve.event_date.date}}</td>
+							</tr>
+							<tr>
+								<th>Event Time:</th>
+								<td>{{eve.event_date.time}}</td>
+							</tr>
+							<tr>
+								<th>Published at:</th>
+								<td><pre>{{eve.event_published.date}}		{{eve.event_published.time}}</pre></td>
+							</tr>
+							<tr>
+								<th>Event by:</th>
+								<td><!-- <a href="/?q={{eve.organizer_id.Organizer_name}}"> </a> -->{{eve.organizer_id.Organizer_name}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer ladoga_bottom" style = "opacity:0.8;">
+						<a href="/EventRegister?event={{eve.id}}" class="modal-close waves-effect waves-green btn-flat"><b>Register</b></a>
+						<a class="modal-close waves-effect waves-green btn-flat"><b>Close</b></a>
+				</div>
+			</div>
+		{% endfor %}
+
+	{% else %}
+		<p style = "font-size:24px;" align = "center"><b>Cannot find any Event related to "{{query}}" </b></p>
+	{% endif %}
+	</div>
+	<script>
+		$(document).ready(function(){
+			$('.modal-trigger').leanModal();
+		});
+	</script>
+{% endblock %}
+
+
